@@ -1,0 +1,18 @@
+{
+  "name": "wowengine/src/library/DataStores",
+  "dependencies": {
+    "%common": "hw-core/cpp-library-common#*",
+    "%logging": "hw-core/cpp-library-logging#*",
+    "%utilities": "hw-core/cpp-library-utilities#*",
+    "%database": "hw-core/cpp-library-database#*",
+    "%dep": "hw-core/cpp-modules-dep#*",
+    "%project": "hw-core/cpp-project#*",
+    "%wowengineproj": "wowengine/project#*"
+  },
+  "devDependencies": {},
+  "_comment_keep": "ensure we keep the right git repository configurations",
+  "keep": [
+    ".git/config"
+  ],
+  "version": "0.0.2"
+}

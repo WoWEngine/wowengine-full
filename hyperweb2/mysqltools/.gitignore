@@ -1,0 +1,13 @@
+#
+# Editors / debuggers / other output files
+#
+*~
+*.bak
+*.orig
+*.patch
+callgrind.out.*
+
+.upt.json
+
+/config/*
+!/config/mysql-config.dist

@@ -1,0 +1,11 @@
+{
+    "name": "wowengine/modules",
+    "dependencies": {
+    },
+    "devDependencies": {
+    },
+    "_comment_keep": "ensure we keep the right git repository configurations",
+    "keep": [
+        ".git/config"
+    ]
+}

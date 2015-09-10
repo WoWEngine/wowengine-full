@@ -1,0 +1,36 @@
+macro(get_WIN32_WINNT version)
+    if (WIN32 AND CMAKE_SYSTEM_VERSION)
+        TCE_SET_CACHE(ver ${CMAKE_SYSTEM_VERSION})
+        string(REPLACE "." "" ver ${ver})
+        string(REGEX REPLACE "([0-9])" "0\\1" ver ${ver})
+
+        TCE_SET_CACHE(${version} "0x${ver}")
+    endif()
+endmacro()
+
+if(WIN32)
+ TCE_SET_CACHE(BOOST_DEBUG ON)
+  if(DEFINED ENV{BOOST_ROOT})
+    string(REPLACE "\\" "/" BOOST_ROOT $ENV{BOOST_ROOT})
+    TCE_SET_CACHE(BOOST_ROOT "${BOOST_ROOT}")
+    TCE_SET_CACHE(BOOST_LIBRARYDIR ${BOOST_ROOT}/lib${PLATFORM}-msvc-12.0)
+  else()
+    message(FATAL_ERROR "No BOOST_ROOT environment variable could be found! Please make sure it is set and the points to your Boost installation.")
+  endif()
+
+  TCE_SET_CACHE(Boost_USE_STATIC_LIBS        ON)
+  TCE_SET_CACHE(Boost_USE_MULTITHREADED      ON)
+  TCE_SET_CACHE(Boost_USE_STATIC_RUNTIME     OFF)
+
+  get_WIN32_WINNT(ver)
+  add_definitions(-D_WIN32_WINNT=${ver})
+endif()
+
+find_package(Boost 1.49 REQUIRED system thread program_options)
+add_definitions(-DBOOST_DATE_TIME_NO_LIB)
+add_definitions(-DBOOST_REGEX_NO_LIB)
+add_definitions(-DBOOST_CHRONO_NO_LIB)
+
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+endif()

@@ -1,0 +1,10 @@
+{
+  "name": "trinitycore/modules/contrib",
+  "dependencies": {},
+  "devDependencies": {},
+  "_comment_keep": "ensure we keep the right git repository configurations",
+  "keep": [
+    ".git/config"
+  ],
+  "version": "0.0.1"
+}

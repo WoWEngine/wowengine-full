@@ -1,0 +1,2 @@
+In this folder should be placed subfolders containing your mods/scripts
+You need a CMakeLists.txt file in root directory of your mod

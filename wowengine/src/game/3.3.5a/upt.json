@@ -1,0 +1,28 @@
+{
+    "name": "wowengine/src/game/3.3.5a",
+    "dependencies": {
+        "%modules" : "wowengine/modules#*",
+        "%sql" : "wowengine/sql#3.3.5a",
+        "%mods" : "wowengine/game-mods#*",
+        "%lib-mods" : "wowengine/lib-mods#*",
+        "%lib-datastores" : "wowengine/lib-datastores#*",
+        "%conf" : "hw-core/cpp-library-configuration#*",
+        "%crypt" : "hw-core/cpp-library-cryptography#*",
+        "%db" : "hw-core/cpp-library-database#*",
+        "%ds" : "wowengine/lib-datastores#*",
+        "%debug" : "hw-core/cpp-library-debugging#*",
+        "%dyn" : "hw-core/cpp-library-datastructure#*",
+        "%log" : "hw-core/cpp-library-logging#*",
+        "%network" : "hw-core/cpp-library-networking#*",
+        "%packets" : "hw-core/cpp-library-packets#*",
+        "%ph" : "hw-core/cpp-library-precompiledheaders#*",
+        "%threading" : "hw-core/cpp-library-threading#*",
+        "%utils" : "hw-core/cpp-library-utilities#*"
+    },
+    "devDependencies": {
+    },
+    "_comment_keep": "ensure we keep the right git repository configurations",
+    "keep": [
+        ".git/config"
+    ]
+}
