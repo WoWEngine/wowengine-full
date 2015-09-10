@@ -1,0 +1,23 @@
+{
+    "db": {
+        "wowengine-335a-chars": {
+            "user": "usr",
+            "pass": "pass",
+            "host": "localhost",
+            "outPath": "./databases/chars"
+        },
+        "wowengine-335a-auth": {
+            "user": "usr",
+            "pass": "pass",
+            "host": "localhost",
+            "outPath": "./databases/auth"
+        },
+        "wowengine-335a-world": {
+            "user": "usr",
+            "pass": "pass",
+            "host": "localhost",
+            "outPath": "./databases/world"
+        }
+    }
+}
+
