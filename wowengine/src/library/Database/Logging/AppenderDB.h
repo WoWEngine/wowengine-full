@@ -15,29 +15,26 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ADHOCSTATEMENT_H
-#define _ADHOCSTATEMENT_H
+#ifndef APPENDERDB_H
+#define APPENDERDB_H
 
-#include <future>
-#include "SQLOperation.h"
+#include "Appender.h"
 
-typedef std::future<QueryResult> QueryResultFuture;
-typedef std::promise<QueryResult> QueryResultPromise;
-
-/*! Raw, ad-hoc query. */
-class BasicStatementTask : public SQLOperation
+class AppenderDB: public Appender
 {
     public:
-        BasicStatementTask(const char* sql, bool async = false);
-        ~BasicStatementTask();
+        typedef std::integral_constant<AppenderType, APPENDER_DB>::type TypeIndex;
 
-        bool Execute() override;
-        QueryResultFuture GetFuture() const { return m_result->get_future(); }
+        AppenderDB(uint8 id, std::string const& name, LogLevel level, AppenderFlags flags, ExtraAppenderArgs extraArgs);
+        ~AppenderDB();
+
+        void setRealmId(uint32 realmId) override;
+        AppenderType getType() const override { return TypeIndex::value; }
 
     private:
-        const char* m_sql;      //- Raw query to be executed
-        bool m_has_result;
-        QueryResultPromise* m_result;
+        uint32 realmId;
+        bool enabled;
+        void _write(LogMessage const* message) override;
 };
 
 #endif
