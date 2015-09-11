@@ -26,7 +26,7 @@
  */
 
 #include "Define.h"
-#include "DataStructures/TypeList.h"
+#include "Dynamic/TypeList.h"
 #include <map>
 
 namespace Trinity

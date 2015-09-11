@@ -21,10 +21,10 @@
 
 #include "DBCFileLoader.h"
 #include "Logging/Log.h"
-#include "Database/Field.h"
-#include "Database/DatabaseWorkerPool.h"
-#include "Database/Implementation/WorldDatabase.h"
-#include "Database/DatabaseEnv.h"
+#include "Field.h"
+#include "DatabaseWorkerPool.h"
+#include "Implementation/WorldDatabase.h"
+#include "DatabaseEnv.h"
 
 struct SqlDbc
 {
@@ -85,6 +85,13 @@ class DBCStorage
         T const* LookupEntry(uint32 id) const
         {
             return (id >= nCount) ? NULL : indexTable.asT[id];
+        }
+
+        T const* AssertEntry(uint32 id) const
+        {
+            T const* entry = LookupEntry(id);
+            ASSERT(entry);
+            return entry;
         }
 
         uint32  GetNumRows() const { return nCount; }

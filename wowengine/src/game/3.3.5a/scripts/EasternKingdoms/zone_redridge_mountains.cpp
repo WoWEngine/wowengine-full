@@ -63,11 +63,12 @@ public:
             Initialize();
         }
 
-        void sQuestAccept(Player* player, Quest const* quest)
+        void sQuestAccept(Player* player, Quest const* quest) override
         {
             if (quest->GetQuestId() == QUEST_MISSING_IN_ACTION)
             {
                 Talk(SAY_CORPORAL_1, player);
+                me->setFaction(250);
                 npc_escortAI::Start(true, false, player->GetGUID(), quest);
             }
         }
@@ -92,7 +93,7 @@ public:
                     me->SetWalk(false);
                     break;
                 case 115:
-                    player->AreaExploredOrEventHappens(QUEST_MISSING_IN_ACTION);
+                    player->GroupEventHappens(QUEST_MISSING_IN_ACTION, me);
                     timer = 2000;
                     phase = 4;
                     break;

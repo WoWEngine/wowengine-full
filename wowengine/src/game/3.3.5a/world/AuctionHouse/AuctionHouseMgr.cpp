@@ -30,7 +30,6 @@
 #include "Item.h"
 #include "Language.h"
 #include "Log.h"
-#include <vector>
 
 enum eAuctionHouse
 {
@@ -294,7 +293,7 @@ void AuctionHouseMgr::LoadAuctionItems()
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemEntry);
         if (!proto)
         {
-            TC_LOG_ERROR("misc", "AuctionHouseMgr::LoadAuctionItems: Unknown item (GUID: %u id: #%u) in auction, skipped.", item_guid, itemEntry);
+            TC_LOG_ERROR("misc", "AuctionHouseMgr::LoadAuctionItems: Unknown item (GUID: %u item entry: #%u) in auction, skipped.", item_guid, itemEntry);
             continue;
         }
 
@@ -440,8 +439,6 @@ bool AuctionHouseObject::RemoveAuction(AuctionEntry* auction)
 
     // we need to delete the entry, it is not referenced any more
     delete auction;
-    auction = NULL;
-
     return wasInMap;
 }
 
@@ -469,7 +466,7 @@ void AuctionHouseObject::Update()
             continue;
 
         ///- Either cancel the auction if there was no bidder
-        if (auction->bidder == 0)
+        if (auction->bidder == 0 && auction->bid == 0)
         {
             sAuctionMgr->SendAuctionExpiredMail(auction, trans);
             sScriptMgr->OnAuctionExpire(this, auction);
