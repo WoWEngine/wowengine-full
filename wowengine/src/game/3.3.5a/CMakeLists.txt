@@ -28,22 +28,25 @@ if(TOOLS)
   add_subdirectory("${CMAKE_WOWENGINE_MODULES_DIR}/dep" "${CMAKE_BINARY_DIR}/wowengine_dep") 
 endif()
 
+#maybe we need to filter some libs when compiling tools only
 MACRO(WOWENGINE_LOAD_LIBS)
     #include common libraries
     include("${CMAKE_TCECPP_LIBRARIES}/Common/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Configuration/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Cryptography/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/DataStructures/CMakeLists.txt")
-    include("${CMAKE_TCECPP_LIBRARIES}/Database/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Debugging/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Logging/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Networking/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Packets/CMakeLists.txt")
+    include("${CMAKE_TCECPP_LIBRARIES}/Service/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Threading/CMakeLists.txt")
     include("${CMAKE_TCECPP_LIBRARIES}/Utilities/CMakeLists.txt")
 
     #include wowengine libraries
     include("${CMAKE_WOWENGINE_LIB_DIR}/DataStores/CMakeLists.txt")
+    include("${CMAKE_WOWENGINE_LIB_DIR}/Database/CMakeLists.txt")
+    include("${CMAKE_WOWENGINE_LIB_DIR}/Collision/CMakeLists.txt")
 ENDMACRO()
 
 if (USE_COREPCH)
@@ -55,39 +58,14 @@ else()
   WOWENGINE_LOAD_LIBS()
 endif ()
 
-# We need to include here instead directly on collision
-# because they are required by world that must be included before collision
-set(include_dirs
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Management
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Maps
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Models
-)
-
 TCE_ADD_INC_PATH("${include_dirs}")
 
 if( SERVERS )
   include("${CMAKE_WOWENGINE_335a_DIR}/world/CMakeLists.txt")
-  include("${CMAKE_WOWENGINE_335a_DIR}/collision/CMakeLists.txt")
   include("${CMAKE_WOWENGINE_335a_DIR}/scripts/CMakeLists.txt")
-
-  # must follow this order
-  include("${CMAKE_WOWENGINE_335a_MODS_DIR}/CMakeLists.txt")
-  include("${CMAKE_WOWENGINE_GAME_MODS_DIR}/CMakeLists.txt")
-  include("${CMAKE_WOWENGINE_LIB_DIR}/mods/CMakeLists.txt")
-
-  # load all mods
-  LOAD_335a_MODS()
-  LOAD_GAME_MODS()
-  # then link mods library to other related
-  target_link_libraries(world
-    mods
-  )
-
   include("${CMAKE_WOWENGINE_335a_DIR}/server/CMakeLists.txt")
 else()
   if( TOOLS )
-    include("${CMAKE_WOWENGINE_335a_DIR}/collision/CMakeLists.txt")
     include("${CMAKE_WOWENGINE_335a_DIR}/server/CMakeLists.txt")
   endif()
 endif()

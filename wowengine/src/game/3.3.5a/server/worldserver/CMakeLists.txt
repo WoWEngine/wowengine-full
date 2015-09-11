@@ -14,8 +14,8 @@ file(GLOB_RECURSE sources_TCSoap ${CMAKE_CURRENT_LIST_DIR}/TCSoap/*.cpp ${CMAKE_
 file(GLOB sources_localdir ${CMAKE_CURRENT_LIST_DIR}/*.cpp ${CMAKE_CURRENT_LIST_DIR}/*.h)
 
 if (USE_COREPCH)
-  set(worldserver_PCH_HDR ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldserverPCH.h)
-  set(worldserver_PCH_SRC ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldserverPCH.cpp)
+  set(worldserver_PCH_HDR ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldPCH.h)
+  set(worldserver_PCH_SRC ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldPCH.cpp)
 endif()
 
 set(worldserver_SRCS
@@ -76,7 +76,6 @@ target_link_libraries(worldserver
   world
   ${TCE_CORE_TGS}
   scripts
-  collision
   g3dlib
   gsoap
   mods

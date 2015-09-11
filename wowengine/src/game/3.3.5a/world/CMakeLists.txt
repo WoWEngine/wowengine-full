@@ -34,8 +34,8 @@ ENDFOREACH()
 # Create world-libary
 
 if (USE_COREPCH)
-  set(world_STAT_PCH_HDR ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldPCH.h)
-  set(world_STAT_PCH_SRC ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/worldPCH.cpp)
+  set(world_STAT_PCH_HDR ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/gamePCH.h)
+  set(world_STAT_PCH_SRC ${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders/gamePCH.cpp)
 endif ()
 
 TCE_LOAD_INC_PATHS()

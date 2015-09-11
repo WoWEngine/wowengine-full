@@ -13,9 +13,9 @@ include_directories(
   ${CMAKE_TCECPP_DEP}/g3dlite/include
   ${CMAKE_TCECPP_LIBRARIES}
   ${CMAKE_TCECPP_LIBRARIES}/Common
-  ${CMAKE_WOWENGINE_335a_DIR}/collision
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Maps
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Models
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision/Maps
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision/Models
   ${ACE_INCLUDE_DIR}
   ${ZLIB_INCLUDE_DIR}
 )

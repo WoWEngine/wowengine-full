@@ -28,10 +28,10 @@ set(mmap_gen_Includes
   ${CMAKE_TCECPP_LIBRARIES}/Threading
   ${CMAKE_TCECPP_LIBRARIES}/Utilities
   ${CMAKE_WOWENGINE_335a_DIR}/world/Conditions
-  ${CMAKE_WOWENGINE_335a_DIR}/collision
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Management
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Maps
-  ${CMAKE_WOWENGINE_335a_DIR}/collision/Models
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision/Management
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision/Maps
+  ${CMAKE_WOWENGINE_LIB_DIR}/collision/Models
 )
 
 if( WIN32 )
