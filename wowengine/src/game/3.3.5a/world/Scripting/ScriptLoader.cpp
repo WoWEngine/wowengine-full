@@ -356,12 +356,10 @@ void AddSC_dustwallow_marsh();
 void AddSC_felwood();
 void AddSC_feralas();
 void AddSC_moonglade();
-void AddSC_mulgore();
 void AddSC_orgrimmar();
 void AddSC_silithus();
 void AddSC_stonetalon_mountains();
 void AddSC_tanaris();
-void AddSC_teldrassil();
 void AddSC_the_barrens();
 void AddSC_thousand_needles();
 void AddSC_thunder_bluff();
@@ -426,7 +424,8 @@ void AddSC_boss_heigan();
 void AddSC_boss_gothik();
 void AddSC_boss_thaddius();
 void AddSC_instance_naxxramas();
-void AddSC_boss_magus_telestra();        //The Nexus Nexus
+void AddSC_boss_nexus_commanders();     // The Nexus Nexus
+void AddSC_boss_magus_telestra();
 void AddSC_boss_anomalus();
 void AddSC_boss_ormorok();
 void AddSC_boss_keristrasza();
@@ -622,6 +621,7 @@ void AddSC_instance_magtheridons_lair();
 void AddSC_boss_grand_warlock_nethekurse();  //HC Shattered Halls
 void AddSC_boss_warbringer_omrogg();
 void AddSC_boss_warchief_kargath_bladefist();
+void AddSC_shattered_halls();
 void AddSC_instance_shattered_halls();
 void AddSC_boss_watchkeeper_gargolmar();     //HC Ramparts
 void AddSC_boss_omor_the_unscarred();
@@ -705,6 +705,7 @@ void AddScripts()
     AddPetScripts();
     AddBattlegroundScripts();
     AddOutdoorPvPScripts();
+    AddCustomScripts();
 #endif
 }
 
@@ -1060,12 +1061,10 @@ void AddKalimdorScripts()
     AddSC_felwood();
     AddSC_feralas();
     AddSC_moonglade();
-    AddSC_mulgore();
     AddSC_orgrimmar();
     AddSC_silithus();
     AddSC_stonetalon_mountains();
     AddSC_tanaris();
-    AddSC_teldrassil();
     AddSC_the_barrens();
     AddSC_thousand_needles();
     AddSC_thunder_bluff();
@@ -1152,6 +1151,7 @@ void AddOutlandScripts()
     AddSC_boss_grand_warlock_nethekurse();  //HC Shattered Halls
     AddSC_boss_warbringer_omrogg();
     AddSC_boss_warchief_kargath_bladefist();
+    AddSC_shattered_halls();
     AddSC_instance_shattered_halls();
     AddSC_boss_watchkeeper_gargolmar();     //HC Ramparts
     AddSC_boss_omor_the_unscarred();
@@ -1254,7 +1254,8 @@ void AddNorthrendScripts()
     AddSC_boss_gothik();
     AddSC_boss_thaddius();
     AddSC_instance_naxxramas();
-    AddSC_boss_magus_telestra();        //The Nexus Nexus
+    AddSC_boss_nexus_commanders();      // The Nexus Nexus
+    AddSC_boss_magus_telestra();
     AddSC_boss_anomalus();
     AddSC_boss_ormorok();
     AddSC_boss_keristrasza();
@@ -1412,3 +1413,15 @@ void AddBattlegroundScripts()
 #endif
 }
 
+#ifdef SCRIPTS
+/* This is where custom scripts' loading functions should be declared. */
+
+#endif
+
+void AddCustomScripts()
+{
+#ifdef SCRIPTS
+    /* This is where custom scripts should be added. */
+
+#endif
+}

@@ -256,6 +256,7 @@ class WorldSession
         bool PlayerLogout() const { return m_playerLogout; }
         bool PlayerLogoutWithSave() const { return m_playerLogout && m_playerSave; }
         bool PlayerRecentlyLoggedOut() const { return m_playerRecentlyLogout; }
+        bool PlayerDisconnected() const { return !m_Socket; }
 
         void ReadAddonsInfo(WorldPacket& data);
         void SendAddonsInfo();
@@ -288,7 +289,7 @@ class WorldSession
 
         uint32 GetGuidLow() const;
         void SetSecurity(AccountTypes security) { _security = security; }
-        std::string const& GetRemoteAddress() { return m_Address; }
+        std::string const& GetRemoteAddress() const { return m_Address; }
         void SetPlayer(Player* player);
         uint8 Expansion() const { return m_expansion; }
 

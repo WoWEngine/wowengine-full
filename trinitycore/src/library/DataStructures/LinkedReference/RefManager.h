@@ -20,8 +20,8 @@
 #define _REFMANAGER_H
 //=====================================================
 
-#include "DataStructures/LinkedList.h"
-#include "DataStructures/LinkedReference/Reference.h"
+#include "Dynamic/LinkedList.h"
+#include "Dynamic/LinkedReference/Reference.h"
 
 template <class TO, class FROM> class RefManager : public LinkedListHead
 {

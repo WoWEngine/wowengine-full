@@ -22,17 +22,16 @@
 #include "Util.h"
 #include "AppenderConsole.h"
 #include "AppenderFile.h"
-#include "AppenderDB.h"
 #include "LogOperation.h"
 
-#include <cstdarg>
 #include <cstdio>
 #include <sstream>
 
-Log::Log() : _ioService(nullptr), _strand(nullptr)
+Log::Log() : AppenderId(0), lowestLogLevel(LOG_LEVEL_FATAL), _ioService(nullptr), _strand(nullptr)
 {
     m_logsTimestamp = "_" + GetTimestampStr();
-    LoadFromConfig();
+    RegisterAppender<AppenderConsole>();
+    RegisterAppender<AppenderFile>();
 }
 
 Log::~Log()
@@ -102,60 +101,21 @@ void Log::CreateAppenderFromConfig(std::string const& appenderName)
     if (size > 2)
         flags = AppenderFlags(atoi(*iter++));
 
-    switch (type)
+    auto factoryFunction = appenderFactory.find(type);
+    if (factoryFunction == appenderFactory.end())
     {
-        case APPENDER_CONSOLE:
-        {
-            AppenderConsole* appender = new AppenderConsole(NextAppenderId(), name, level, flags);
-            appenders[appender->getId()] = appender;
-            if (size > 3)
-                appender->InitColors(*iter++);
-            //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type CONSOLE, Mask %u\n", appender->getName().c_str(), appender->getId(), appender->getLogLevel());
-            break;
-        }
-        case APPENDER_FILE:
-        {
-            std::string filename;
-            std::string mode = "a";
+        fprintf(stderr, "Log::CreateAppenderFromConfig: Unknown type %d for appender %s\n", type, name.c_str());
+        return;
+    }
 
-            if (size < 4)
-            {
-                fprintf(stderr, "Log::CreateAppenderFromConfig: Missing file name for appender %s\n", name.c_str());
-                return;
-            }
-
-            filename = *iter++;
-
-            if (size > 4)
-                mode = *iter++;
-
-            if (flags & APPENDER_FLAGS_USE_TIMESTAMP)
-            {
-                size_t dot_pos = filename.find_last_of(".");
-                if (dot_pos != filename.npos)
-                    filename.insert(dot_pos, m_logsTimestamp);
-                else
-                    filename += m_logsTimestamp;
-            }
-
-            uint64 maxFileSize = 0;
-            if (size > 5)
-                maxFileSize = atoi(*iter++);
-
-            uint8 id = NextAppenderId();
-            appenders[id] = new AppenderFile(id, name, level, filename.c_str(), m_logsDir.c_str(), mode.c_str(), flags, maxFileSize);
-            //fprintf(stdout, "Log::CreateAppenderFromConfig: Created Appender %s (%u), Type FILE, Mask %u, File %s, Mode %s\n", name.c_str(), id, level, filename.c_str(), mode.c_str());
-            break;
-        }
-        case APPENDER_DB:
-        {
-            uint8 id = NextAppenderId();
-            appenders[id] = new AppenderDB(id, name, level);
-            break;
-        }
-        default:
-            fprintf(stderr, "Log::CreateAppenderFromConfig: Unknown type %d for appender %s\n", type, name.c_str());
-            break;
+    try
+    {
+        Appender* appender = factoryFunction->second(NextAppenderId(), name, level, flags, ExtraAppenderArgs(iter, tokens.end()));
+        appenders[appender->getId()] = appender;
+    }
+    catch (InvalidAppenderArgsException const& iaae)
+    {
+        fprintf(stderr, "%s", iaae.what());
     }
 }
 
@@ -198,6 +158,9 @@ void Log::CreateLoggerFromConfig(std::string const& appenderName)
         fprintf(stderr, "Log::CreateLoggerFromConfig: Wrong Log Level %u for logger %s\n", type, name.c_str());
         return;
     }
+
+    if (level < lowestLogLevel)
+        lowestLogLevel = level;
 
     logger.Create(name, level);
     //fprintf(stdout, "Log::CreateLoggerFromConfig: Created Logger %s, Level %u\n", name.c_str(), level);
@@ -248,7 +211,7 @@ void Log::ReadLoggersFromConfig()
 
         Close(); // Clean any Logger or Appender created
 
-        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE);
+        AppenderConsole* appender = new AppenderConsole(NextAppenderId(), "Console", LOG_LEVEL_DEBUG, APPENDER_FLAGS_NONE, ExtraAppenderArgs());
         appenders[appender->getId()] = appender;
 
         Logger& logger = loggers[LOGGER_ROOT];
@@ -261,30 +224,18 @@ void Log::ReadLoggersFromConfig()
     }
 }
 
-void Log::vlog(std::string const& filter, LogLevel level, char const* str, va_list argptr)
-{
-    char text[MAX_QUERY_LEN];
-    vsnprintf(text, MAX_QUERY_LEN, str, argptr);
-    write(new LogMessage(level, filter, text));
-}
-
-void Log::write(LogMessage* msg) const
+void Log::write(std::unique_ptr<LogMessage>&& msg) const
 {
     Logger const* logger = GetLoggerByType(msg->type);
-    msg->text.append("\n");
 
     if (_ioService)
     {
-        auto logOperation = std::shared_ptr<LogOperation>(new LogOperation(logger, msg));
+        auto logOperation = std::shared_ptr<LogOperation>(new LogOperation(logger, std::move(msg)));
 
         _ioService->post(_strand->wrap([logOperation](){ logOperation->call(); }));
-
     }
     else
-    {
-        logger->write(*msg);
-        delete msg;
-    }
+        logger->write(msg.get());
 }
 
 std::string Log::GetTimestampStr()
@@ -300,9 +251,8 @@ std::string Log::GetTimestampStr()
     //       HH     hour (2 digits 00-23)
     //       MM     minutes (2 digits 00-59)
     //       SS     seconds (2 digits 00-59)
-    char buf[20];
-    snprintf(buf, 20, "%04d-%02d-%02d_%02d-%02d-%02d", aTm.tm_year+1900, aTm.tm_mon+1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
-    return std::string(buf);
+    return Trinity::StringFormat("%04d-%02d-%02d_%02d-%02d-%02d",
+        aTm.tm_year + 1900, aTm.tm_mon + 1, aTm.tm_mday, aTm.tm_hour, aTm.tm_min, aTm.tm_sec);
 }
 
 bool Log::SetLogLevel(std::string const& name, const char* newLevelc, bool isLogger /* = true */)
@@ -321,6 +271,9 @@ bool Log::SetLogLevel(std::string const& name, const char* newLevelc, bool isLog
             return false;
 
         it->second.setLogLevel(newLevel);
+
+        if (newLevel != LOG_LEVEL_DISABLED && newLevel < lowestLogLevel)
+            lowestLogLevel = newLevel;
     }
     else
     {
@@ -343,57 +296,46 @@ void Log::outCharDump(char const* str, uint32 accountId, uint64 guid, char const
     ss << "== START DUMP == (account: " << accountId << " guid: " << guid << " name: " << name
        << ")\n" << str << "\n== END DUMP ==\n";
 
-    LogMessage* msg = new LogMessage(LOG_LEVEL_INFO, "entities.player.dump", ss.str());
+    std::unique_ptr<LogMessage> msg(new LogMessage(LOG_LEVEL_INFO, "entities.player.dump", ss.str()));
     std::ostringstream param;
     param << guid << '_' << name;
 
     msg->param1 = param.str();
 
-    write(msg);
-}
-
-void Log::outCommand(uint32 account, const char * str, ...)
-{
-    if (!str || !ShouldLog("commands.gm", LOG_LEVEL_INFO))
-        return;
-
-    va_list ap;
-    va_start(ap, str);
-    char text[MAX_QUERY_LEN];
-    vsnprintf(text, MAX_QUERY_LEN, str, ap);
-    va_end(ap);
-
-    LogMessage* msg = new LogMessage(LOG_LEVEL_INFO, "commands.gm", text);
-
-    std::ostringstream ss;
-    ss << account;
-    msg->param1 = ss.str();
-
-    write(msg);
+    write(std::move(msg));
 }
 
 void Log::SetRealmId(uint32 id)
 {
     for (AppenderMap::iterator it = appenders.begin(); it != appenders.end(); ++it)
-        if (it->second && it->second->getType() == APPENDER_DB)
-            ((AppenderDB *)it->second)->setRealmId(id);
+        it->second->setRealmId(id);
 }
 
 void Log::Close()
 {
     loggers.clear();
     for (AppenderMap::iterator it = appenders.begin(); it != appenders.end(); ++it)
-    {
         delete it->second;
-        it->second = NULL;
-    }
+
     appenders.clear();
+}
+
+void Log::Initialize(boost::asio::io_service* ioService)
+{
+    if (ioService)
+    {
+        _ioService = ioService;
+        _strand = new boost::asio::strand(*ioService);
+    }
+
+    LoadFromConfig();
 }
 
 void Log::LoadFromConfig()
 {
     Close();
 
+    lowestLogLevel = LOG_LEVEL_FATAL;
     AppenderId = 0;
     m_logsDir = sConfigMgr->GetStringDefault("LogsDir", "");
     if (!m_logsDir.empty())

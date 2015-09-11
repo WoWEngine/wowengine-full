@@ -39,9 +39,9 @@ enum AuctionQuality
 
 enum AuctionHouseType
 {
-    AUCTION_HOUSE_ALLIANCE  = 0,
-    AUCTION_HOUSE_HORDE     = 1,
-    AUCTION_HOUSE_NEUTRAL   = 2
+    AUCTION_HOUSE_NEUTRAL   = 0,
+    AUCTION_HOUSE_ALLIANCE  = 1,
+    AUCTION_HOUSE_HORDE     = 2
 };
 
 #define MAX_AUCTION_HOUSE_TYPE 3
@@ -110,10 +110,21 @@ enum AuctionBotConfigUInt32Values
     CONFIG_AHBOT_CLASS_PERMANENT_PRICE_RATIO,
     CONFIG_AHBOT_CLASS_MISC_PRICE_RATIO,
     CONFIG_AHBOT_CLASS_GLYPH_PRICE_RATIO,
-    CONFIG_AHBOT_BUYER_CHANCE_RATIO_ALLIANCE,
-    CONFIG_AHBOT_BUYER_CHANCE_RATIO_HORDE,
-    CONFIG_AHBOT_BUYER_CHANCE_RATIO_NEUTRAL,
     CONFIG_AHBOT_BUYER_RECHECK_INTERVAL,
+    CONFIG_AHBOT_BUYER_BASEPRICE_GRAY,
+    CONFIG_AHBOT_BUYER_BASEPRICE_WHITE,
+    CONFIG_AHBOT_BUYER_BASEPRICE_GREEN,
+    CONFIG_AHBOT_BUYER_BASEPRICE_BLUE,
+    CONFIG_AHBOT_BUYER_BASEPRICE_PURPLE,
+    CONFIG_AHBOT_BUYER_BASEPRICE_ORANGE,
+    CONFIG_AHBOT_BUYER_BASEPRICE_YELLOW,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_GRAY,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_WHITE,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_GREEN,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_BLUE,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_PURPLE,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_ORANGE,
+    CONFIG_AHBOT_BUYER_CHANCEMULTIPLIER_YELLOW,
     CONFIG_AHBOT_CLASS_MISC_MOUNT_MIN_REQ_LEVEL,
     CONFIG_AHBOT_CLASS_MISC_MOUNT_MAX_REQ_LEVEL,
     CONFIG_AHBOT_CLASS_MISC_MOUNT_MIN_SKILL_RANK,
@@ -143,7 +154,6 @@ enum AuctionBotConfigBoolValues
     CONFIG_AHBOT_BIND_USE,
     CONFIG_AHBOT_BIND_QUEST,
     CONFIG_AHBOT_BUYPRICE_SELLER,
-    CONFIG_AHBOT_BUYPRICE_BUYER,
     CONFIG_AHBOT_SELLER_ENABLED,
     CONFIG_AHBOT_BUYER_ENABLED,
     CONFIG_AHBOT_LOCKBOX_ENABLED,
@@ -162,6 +172,12 @@ enum AuctionBotConfigBoolValues
     CONFIG_AHBOT_CLASS_MISC_ALLOW_ZERO,
     CONFIG_AHBOT_CLASS_GLYPH_ALLOW_ZERO,
     CONFIG_UINT32_AHBOT_BOOL_COUNT
+};
+
+enum AuctionBotConfigFloatValues
+{
+    CONFIG_AHBOT_BUYER_CHANCE_FACTOR,
+    CONFIG_AHBOT_FLOAT_COUNT
 };
 
 // All basic config data used by other AHBot classes for self-configure.
@@ -186,8 +202,10 @@ public:
 
     uint32 GetConfig(AuctionBotConfigUInt32Values index) const { return _configUint32Values[index]; }
     bool GetConfig(AuctionBotConfigBoolValues index) const { return _configBoolValues[index]; }
+    float GetConfig(AuctionBotConfigFloatValues index) const { return _configFloatValues[index]; }
     void SetConfig(AuctionBotConfigBoolValues index, bool value) { _configBoolValues[index] = value; }
     void SetConfig(AuctionBotConfigUInt32Values index, uint32 value) { _configUint32Values[index] = value; }
+    void SetConfig(AuctionBotConfigFloatValues index, float value) { _configFloatValues[index] = value; }
 
     uint32 GetConfigItemAmountRatio(AuctionHouseType houseType) const;
     bool GetConfigBuyerEnabled(AuctionHouseType houseType) const;
@@ -207,6 +225,7 @@ private:
 
     uint32 _configUint32Values[CONFIG_UINT32_AHBOT_UINT32_COUNT];
     bool _configBoolValues[CONFIG_UINT32_AHBOT_BOOL_COUNT];
+    float _configFloatValues[CONFIG_AHBOT_FLOAT_COUNT];
 
     void SetAHBotIncludes(const std::string& AHBotIncludes) { _AHBotIncludes = AHBotIncludes; }
     void SetAHBotExcludes(const std::string& AHBotExcludes) { _AHBotExcludes = AHBotExcludes; }
@@ -215,6 +234,7 @@ private:
     void SetConfigMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 maxvalue);
     void SetConfigMinMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 minvalue, uint32 maxvalue);
     void SetConfig(AuctionBotConfigBoolValues index, char const* fieldname, bool defvalue);
+    void SetConfig(AuctionBotConfigFloatValues index, char const* fieldname, float defvalue);
     void GetConfigFromFile();
 };
 

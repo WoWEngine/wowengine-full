@@ -74,7 +74,8 @@ local.properties
 .texlipse
 
 # WoWEngine
-
+nbproject/
+.uptrc
 wowengine/usr/*
 
 

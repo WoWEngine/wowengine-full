@@ -224,7 +224,7 @@ class boss_flame_leviathan : public CreatureScript
 
         struct boss_flame_leviathanAI : public BossAI
         {
-            boss_flame_leviathanAI(Creature* creature) : BossAI(creature, BOSS_LEVIATHAN), vehicle(creature->GetVehicleKit())
+            boss_flame_leviathanAI(Creature* creature) : BossAI(creature, BOSS_LEVIATHAN)
             {
                 Initialize();
             }
@@ -244,7 +244,6 @@ class boss_flame_leviathan : public CreatureScript
 
             void InitializeAI() override
             {
-                ASSERT(vehicle);
                 if (!me->isDead())
                     Reset();
 
@@ -256,7 +255,6 @@ class boss_flame_leviathan : public CreatureScript
                 me->SetReactState(REACT_PASSIVE);
             }
 
-            Vehicle* vehicle;
             uint8 ActiveTowersCount;
             uint8 Shutdown;
             bool ActiveTowers;
@@ -339,7 +337,7 @@ class boss_flame_leviathan : public CreatureScript
             void SpellHit(Unit* /*caster*/, SpellInfo const* spell) override
             {
                 if (spell->Id == SPELL_START_THE_ENGINE)
-                    vehicle->InstallAllAccessories(false);
+                    ASSERT_NOTNULL(me->GetVehicleKit())->InstallAllAccessories(false);
 
                 if (spell->Id == SPELL_ELECTROSHOCK)
                     me->InterruptSpell(CURRENT_CHANNELED_SPELL);
@@ -482,40 +480,47 @@ class boss_flame_leviathan : public CreatureScript
                 if (action && action <= 4) // Tower destruction, debuff leviathan loot and reduce active tower count
                 {
                     if (me->HasLootMode(LOOT_MODE_DEFAULT | LOOT_MODE_HARD_MODE_1 | LOOT_MODE_HARD_MODE_2 | LOOT_MODE_HARD_MODE_3 | LOOT_MODE_HARD_MODE_4) && ActiveTowersCount == 4)
-                    {
                         me->RemoveLootMode(LOOT_MODE_HARD_MODE_4);
-                        --ActiveTowersCount;
-                    }
+
                     if (me->HasLootMode(LOOT_MODE_DEFAULT | LOOT_MODE_HARD_MODE_1 | LOOT_MODE_HARD_MODE_2 | LOOT_MODE_HARD_MODE_3) && ActiveTowersCount == 3)
-                    {
                         me->RemoveLootMode(LOOT_MODE_HARD_MODE_3);
-                        --ActiveTowersCount;
-                    }
+
                     if (me->HasLootMode(LOOT_MODE_DEFAULT | LOOT_MODE_HARD_MODE_1 | LOOT_MODE_HARD_MODE_2) && ActiveTowersCount == 2)
-                    {
                         me->RemoveLootMode(LOOT_MODE_HARD_MODE_2);
-                        --ActiveTowersCount;
-                    }
+
                     if (me->HasLootMode(LOOT_MODE_DEFAULT | LOOT_MODE_HARD_MODE_1) && ActiveTowersCount == 1)
-                    {
                         me->RemoveLootMode(LOOT_MODE_HARD_MODE_1);
-                        --ActiveTowersCount;
-                    }
                 }
 
                 switch (action)
                 {
                     case ACTION_TOWER_OF_STORM_DESTROYED:
-                        towerOfStorms = false;
+                        if (towerOfStorms)
+                        {
+                            towerOfStorms = false;
+                            --ActiveTowersCount;
+                        }
                         break;
                     case ACTION_TOWER_OF_FROST_DESTROYED:
-                        towerOfFrost = false;
+                        if (towerOfFrost)
+                        {
+                            towerOfFrost = false;
+                            --ActiveTowersCount;
+                        }
                         break;
                     case ACTION_TOWER_OF_FLAMES_DESTROYED:
-                        towerOfFlames = false;
+                        if (towerOfFlames)
+                        {
+                            towerOfFlames = false;
+                            --ActiveTowersCount;
+                        }
                         break;
                     case ACTION_TOWER_OF_LIFE_DESTROYED:
-                        towerOfLife = false;
+                        if (towerOfLife)
+                        {
+                            towerOfLife = false;
+                            --ActiveTowersCount;
+                        }
                         break;
                     case ACTION_START_HARD_MODE:  // Activate hard-mode enable all towers, apply buffs on leviathan
                         ActiveTowers = true;
@@ -577,16 +582,14 @@ class boss_flame_leviathan_seat : public CreatureScript
 
         struct boss_flame_leviathan_seatAI : public ScriptedAI
         {
-            boss_flame_leviathan_seatAI(Creature* creature) : ScriptedAI(creature), vehicle(creature->GetVehicleKit())
+            boss_flame_leviathan_seatAI(Creature* creature) : ScriptedAI(creature)
             {
-                ASSERT(vehicle);
                 me->SetReactState(REACT_PASSIVE);
                 me->SetDisplayId(me->GetCreatureTemplate()->Modelid2);
                 instance = creature->GetInstanceScript();
             }
 
             InstanceScript* instance;
-            Vehicle* vehicle;
 
             void PassengerBoarded(Unit* who, int8 seatId, bool apply) override
             {
@@ -621,7 +624,7 @@ class boss_flame_leviathan_seat : public CreatureScript
                     if (apply)
                         return;
 
-                    if (Unit* device = vehicle->GetPassenger(SEAT_DEVICE))
+                    if (Unit* device = ASSERT_NOTNULL(me->GetVehicleKit())->GetPassenger(SEAT_DEVICE))
                     {
                         device->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_SPELLCLICK);
                         device->SetUInt32Value(UNIT_FIELD_FLAGS, 0); // unselectable

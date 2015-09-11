@@ -26,7 +26,7 @@
  */
 
 #include "Define.h"
-#include "DataStructures/TypeContainer.h"
+#include "Dynamic/TypeContainer.h"
 
 // forward declaration
 template<class T, class Y> class TypeContainerVisitor;

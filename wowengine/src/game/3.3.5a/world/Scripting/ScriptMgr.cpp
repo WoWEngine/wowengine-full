@@ -33,7 +33,6 @@
 #include "Player.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
-#include "ModsMgr.h"
 
 // namespace
 // {
@@ -183,9 +182,8 @@ struct TSpellSummary
     uint8 Effects;                                          // set of enum SelectEffect
 } *SpellSummary;
 
-ScriptMgr::ScriptMgr() : _scriptCount(0)
+ScriptMgr::ScriptMgr() : _scriptCount(0), _scheduledScripts(0)
 {
-    _scheduledScripts = 0;
 }
 
 ScriptMgr::~ScriptMgr() { }
@@ -200,8 +198,6 @@ void ScriptMgr::Initialize()
 
     FillSpellSummary();
     AddScripts();
-
-    sModsMgr->Initialization();
 
 #ifdef SCRIPTS
     for (std::string const& scriptName : UnusedScriptNames)

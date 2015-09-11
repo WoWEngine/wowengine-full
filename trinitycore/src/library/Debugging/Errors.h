@@ -19,7 +19,7 @@
 #ifndef TRINITYCORE_ERRORS_H
 #define TRINITYCORE_ERRORS_H
 
-#include "Common/Define.h"
+#include "Define.h"
 
 namespace Trinity
 {
@@ -48,5 +48,11 @@ namespace Trinity
 #define WPWarning(cond, msg) ASSERT_BEGIN do { if (!(cond)) Trinity::Warning(__FILE__, __LINE__, __FUNCTION__, (msg)); } while(0) ASSERT_END
 
 #define ASSERT WPAssert
+
+template <typename T> inline T* ASSERT_NOTNULL(T* pointer)
+{
+    ASSERT(pointer);
+    return pointer;
+}
 
 #endif
