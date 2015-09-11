@@ -15,21 +15,21 @@ endif()
 
 TCE_SET_PATH("CMAKE_TCE_LIB_PACKETS_DIR" "${CMAKE_TCECPP_LIBRARIES}/Packets")
 
-file(GLOB_RECURSE hwc_sources_PACKETS "${CMAKE_TCE_LIB_PACKETS_DIR}/*.cpp" "${CMAKE_TCE_LIB_PACKETS_DIR}/*.h")
+file(GLOB_RECURSE tce_sources_PACKETS "${CMAKE_TCE_LIB_PACKETS_DIR}/*.cpp" "${CMAKE_TCE_LIB_PACKETS_DIR}/*.h")
 
 if (USE_COREPCH)
-    set(hwc_extra_STAT_SRC
-        ${hwc_extra_STAT_SRC}
-        ${hwc_sources_PACKETS}
+    set(tce_extra_STAT_SRC
+        ${tce_extra_STAT_SRC}
+        ${tce_sources_PACKETS}
     )
     # update global 
-    TCE_SET_GLOBAL("hwc_extra_STAT_SRC" "${hwc_extra_STAT_SRC}")
+    TCE_SET_GLOBAL("tce_extra_STAT_SRC" "${tce_extra_STAT_SRC}")
 else()
     TCE_LOAD_INC_PATHS()
 
-    add_library(hwc_lib_packets STATIC
-      ${hwc_sources_PACKETS}
+    add_library(tce_lib_packets STATIC
+      ${tce_sources_PACKETS}
     )
 
-    TCE_ADD_CORE_TG("hwc_lib_packets")
+    TCE_ADD_CORE_TG("tce_lib_packets")
 endif()

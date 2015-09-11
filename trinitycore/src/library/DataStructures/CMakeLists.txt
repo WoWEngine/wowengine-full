@@ -16,43 +16,43 @@ TCE_SET_PATH("CMAKE_TCE_LIB_DATASTRUCTURES_DIR" "${CMAKE_TCECPP_LIBRARIES}/DataS
 # add libraries
 TCE_SUBDIRLIST(sub_DIRS  "${CMAKE_TCE_LIB_DATASTRUCTURES_DIR}" TRUE)
 FOREACH(subdir ${sub_DIRS})
-    file(GLOB hwc_lib_datastructures_sources "${subdir}/*.cpp" "${subdir}/*.h")
+    file(GLOB tce_lib_datastructures_sources "${subdir}/*.cpp" "${subdir}/*.h")
 
-    set(hwc_lib_datastructures_srcs
-        ${hwc_lib_datastructures_sources}
-        ${hwc_lib_datastructures_srcs}
+    set(tce_lib_datastructures_srcs
+        ${tce_lib_datastructures_sources}
+        ${tce_lib_datastructures_srcs}
     )
 
-    set(hwc_lib_datastructures_dirs
+    set(tce_lib_datastructures_dirs
         ${subdir}
-        ${hwc_lib_datastructures_dirs}
+        ${tce_lib_datastructures_dirs}
     )
 ENDFOREACH()
 
-file(GLOB hwc_sources_Datastructures "${CMAKE_TCE_LIB_DATASTRUCTURES_DIR}/*.cpp" "${CMAKE_TCE_LIB_DATASTRUCTURES_DIR}/*.h")
+file(GLOB tce_sources_Datastructures "${CMAKE_TCE_LIB_DATASTRUCTURES_DIR}/*.cpp" "${CMAKE_TCE_LIB_DATASTRUCTURES_DIR}/*.h")
 
-TCE_ADD_INC_PATH("${hwc_lib_datastructures_dirs}")
+TCE_ADD_INC_PATH("${tce_lib_datastructures_dirs}")
 
 
 if (USE_COREPCH)
-    set(hwc_extra_STAT_SRC
-      ${hwc_extra_STAT_SRC}
-      ${hwc_sources_Datastructures}
-      ${hwc_lib_datastructures_srcs}
+    set(tce_extra_STAT_SRC
+      ${tce_extra_STAT_SRC}
+      ${tce_sources_Datastructures}
+      ${tce_lib_datastructures_srcs}
     )
 
     # update global 
-    TCE_SET_GLOBAL("hwc_extra_STAT_SRC" "${hwc_extra_STAT_SRC}")
+    TCE_SET_GLOBAL("tce_extra_STAT_SRC" "${tce_extra_STAT_SRC}")
 else()
-    add_library(hwc_lib_datastructures STATIC
-      ${hwc_sources_Datastructures}
-      ${hwc_lib_datastructures_srcs}
+    add_library(tce_lib_datastructures STATIC
+      ${tce_sources_Datastructures}
+      ${tce_lib_datastructures_srcs}
     )
 
-    set_target_properties(hwc_lib_datastructures PROPERTIES LINKER_LANGUAGE CXX)
+    set_target_properties(tce_lib_datastructures PROPERTIES LINKER_LANGUAGE CXX)
 
     # HEADER ONLY CANNOT BE TARGETTED IN CMAKE 2.8
     #target_link_libraries(core
-    #    hwc_lib_datastructures
+    #    tce_lib_datastructures
     #)
 endif()

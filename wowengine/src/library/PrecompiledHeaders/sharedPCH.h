@@ -1,5 +1,6 @@
 //add here most rarely modified headers to speed up debug build compilation
 
+// COLLISION
 #include "BoundingIntervalHierarchy.h"
 #include "BoundingIntervalHierarchyWrapper.h"
 #include "RegularGrid.h"
@@ -8,3 +9,29 @@
 #include "Collision/Models/WorldModel.h"
 #include "Collision/Models/ModelInstance.h"
 #include "Collision/Models/GameObjectModel.h"
+
+// DATABASE
+#include "Config.h"
+#include "Database/AdhocStatement.h"
+#include "Database/DatabaseEnv.h"
+#include "Database/DatabaseLoader.h"
+#include "Database/DatabaseWorker.h"
+#include "Database/DatabaseWorkerPool.h"
+#include "Database/Field.h"
+#include "Database/MySQLConnection.h"
+#include "Database/MySQLThreading.h"
+#include "Database/PreparedStatement.h"
+#include "Database/QueryHolder.h"
+#include "Database/QueryResult.h"
+#include "Database/SQLOperation.h"
+#include "Database/Transaction.h"
+#include "Logging/Appender.h"
+#include "Logging/AppenderConsole.h"
+#include "Logging/AppenderDB.h"
+#include "Logging/AppenderFile.h"
+#include "Logging/Log.h"
+#include "Logging/LogOperation.h"
+#include "Logging/Logger.h"
+#include "Updater/DBUpdater.h"
+#include "Updater/UpdateFetcher.h"
+

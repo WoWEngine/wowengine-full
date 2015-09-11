@@ -15,9 +15,9 @@ if (NOT PROJECT_NAME)
     project(TCE)
 endif()
 
-TCE_GET_GLOBAL("hwc_extra_STAT_SRC")
-TCE_GET_GLOBAL("hwc_lib_STAT_PCH_SRC")
-TCE_GET_GLOBAL("hwc_lib_STAT_PCH_HDR")
+TCE_GET_GLOBAL("tce_extra_STAT_SRC")
+TCE_GET_GLOBAL("tce_lib_STAT_PCH_SRC")
+TCE_GET_GLOBAL("tce_lib_STAT_PCH_HDR")
 TCE_GET_GLOBAL("TCE_CORE_TGS")
 
 TCE_LOAD_INC_PATHS()
@@ -27,10 +27,10 @@ TCE_LOAD_INC_PATHS()
 # to support 2.8 version
 # so dummy files are needed here
 add_library(core STATIC
-    "${hwc_lib_STAT_PCH_SRC}"
+    "${tce_lib_STAT_PCH_SRC}"
     "${CMAKE_CURRENT_LIST_DIR}/coreProj.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/coreProj.h"
-    ${hwc_extra_STAT_SRC} # list of extra sources
+    ${tce_extra_STAT_SRC} # list of extra sources
 )
 
 set_target_properties(core PROPERTIES LINKER_LANGUAGE CXX)
@@ -56,8 +56,8 @@ target_link_libraries(core
 
 TCE_ADD_CORE_TG("core")
 
-if(hwc_lib_STAT_PCH_HDR AND hwc_lib_STAT_PCH_SRC)
+if(tce_lib_STAT_PCH_HDR AND tce_lib_STAT_PCH_SRC)
     message("adding pch...")
-    add_cxx_pch(core ${hwc_lib_STAT_PCH_HDR} ${hwc_lib_STAT_PCH_SRC})
+    add_cxx_pch(core ${tce_lib_STAT_PCH_HDR} ${tce_lib_STAT_PCH_SRC})
 endif()
 

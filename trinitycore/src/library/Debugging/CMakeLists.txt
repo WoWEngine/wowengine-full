@@ -16,21 +16,21 @@ TCE_SET_PATH("CMAKE_TCE_LIB_DEBUGGING_DIR" "${CMAKE_TCECPP_LIBRARIES}/Debugging"
 # Manually set sources for Debugging directory as we don't want to include WheatyExceptionReport in shared project
 # It needs to be included both in authserver and worldserver for the static global variable to be properly initialized
 # and to handle crash logs on windows
-set(hwc_sources_DEBUGGING "${CMAKE_TCE_LIB_DEBUGGING_DIR}/Errors.cpp" "${CMAKE_TCE_LIB_DEBUGGING_DIR}/Errors.h")
+set(tce_sources_DEBUGGING "${CMAKE_TCE_LIB_DEBUGGING_DIR}/Errors.cpp" "${CMAKE_TCE_LIB_DEBUGGING_DIR}/Errors.h")
 
 if (USE_COREPCH)
-    set(hwc_extra_STAT_SRC
-        ${hwc_extra_STAT_SRC}
-        ${hwc_sources_DEBUGGING}
+    set(tce_extra_STAT_SRC
+        ${tce_extra_STAT_SRC}
+        ${tce_sources_DEBUGGING}
     )
     # update global 
-    TCE_SET_GLOBAL("hwc_extra_STAT_SRC" "${hwc_extra_STAT_SRC}")
+    TCE_SET_GLOBAL("tce_extra_STAT_SRC" "${tce_extra_STAT_SRC}")
 else()
     TCE_LOAD_INC_PATHS()
 
-    add_library(hwc_lib_debugging STATIC
-      ${hwc_sources_DEBUGGING}
+    add_library(tce_lib_debugging STATIC
+      ${tce_sources_DEBUGGING}
     )
 
-    TCE_ADD_CORE_TG("hwc_lib_debugging")
+    TCE_ADD_CORE_TG("tce_lib_debugging")
 endif()

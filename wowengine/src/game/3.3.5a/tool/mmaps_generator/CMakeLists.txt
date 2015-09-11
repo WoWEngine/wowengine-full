@@ -12,7 +12,7 @@ file(GLOB_RECURSE mmap_gen_sources *.cpp *.h)
 
 set(mmap_gen_Includes
   ${CMAKE_BINARY_DIR}
-  ${CMAKE_BINARY_DIR}/hwc_project
+  ${CMAKE_BINARY_DIR}/tce_project
   ${CMAKE_BINARY_DIR}/wowengine_project
   ${CMAKE_BINARY_DIR}/wowengine_dep
   ${CMAKE_WOWENGINE_MODULES_DIR}/dep/libmpq

@@ -16,39 +16,39 @@ TCE_SET_PATH("CMAKE_WOWENGINE_LIB_COLLISION_DIR" "${CMAKE_WOWENGINE_LIB_DIR}/Col
 # add libraries
 TCE_SUBDIRLIST(sub_DIRS  "${CMAKE_WOWENGINE_LIB_COLLISION_DIR}" TRUE)
 FOREACH(subdir ${sub_DIRS})
-    file(GLOB hwc_lib_collision_sources "${subdir}/*.cpp" "${subdir}/*.h")
+    file(GLOB tce_lib_collision_sources "${subdir}/*.cpp" "${subdir}/*.h")
 
-    set(hwc_lib_collision_srcs
-        ${hwc_lib_collision_sources}
-        ${hwc_lib_collision_srcs}
+    set(tce_lib_collision_srcs
+        ${tce_lib_collision_sources}
+        ${tce_lib_collision_srcs}
     )
 
-    set(hwc_lib_collision_dirs
+    set(tce_lib_collision_dirs
         ${subdir}
-        ${hwc_lib_collision_dirs}
+        ${tce_lib_collision_dirs}
     )
 ENDFOREACH()
 
-file(GLOB hwc_sources_COLLISION "${CMAKE_WOWENGINE_LIB_COLLISION_DIR}/*.cpp" "${CMAKE_WOWENGINE_LIB_COLLISION_DIR}/*.h")
+file(GLOB tce_sources_COLLISION "${CMAKE_WOWENGINE_LIB_COLLISION_DIR}/*.cpp" "${CMAKE_WOWENGINE_LIB_COLLISION_DIR}/*.h")
 
-TCE_ADD_INC_PATH("${hwc_lib_collision_dirs}")
+TCE_ADD_INC_PATH("${tce_lib_collision_dirs}")
 
 
 if (USE_COREPCH)
-    set(hwc_extra_STAT_SRC
-        ${hwc_extra_STAT_SRC}
-        ${hwc_sources_COLLISION}
-        ${hwc_lib_collision_srcs}
+    set(tce_extra_STAT_SRC
+        ${tce_extra_STAT_SRC}
+        ${tce_sources_COLLISION}
+        ${tce_lib_collision_srcs}
     )
     # update global 
-    TCE_SET_GLOBAL("hwc_extra_STAT_SRC" "${hwc_extra_STAT_SRC}")
+    TCE_SET_GLOBAL("tce_extra_STAT_SRC" "${tce_extra_STAT_SRC}")
 else()
     TCE_LOAD_INC_PATHS()
 
-    add_library(hwc_lib_collision STATIC
-      ${hwc_sources_COLLISION}
-      ${hwc_lib_collision_srcs}
+    add_library(tce_lib_collision STATIC
+      ${tce_sources_COLLISION}
+      ${tce_lib_collision_srcs}
     )
 
-    TCE_ADD_CORE_TG("hwc_lib_collision")
+    TCE_ADD_CORE_TG("tce_lib_collision")
 endif()
