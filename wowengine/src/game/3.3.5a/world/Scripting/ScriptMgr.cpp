@@ -33,6 +33,7 @@
 #include "Player.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
+#include "ModsMgr.h"
 
 // namespace
 // {
@@ -198,6 +199,8 @@ void ScriptMgr::Initialize()
 
     FillSpellSummary();
     AddScripts();
+
+    sModsMgr->Initialization();
 
 #ifdef SCRIPTS
     for (std::string const& scriptName : UnusedScriptNames)

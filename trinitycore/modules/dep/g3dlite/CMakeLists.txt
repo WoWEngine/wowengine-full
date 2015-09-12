@@ -8,7 +8,7 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-set(CURDIR ${CMAKE_HW2CPP_DEP})
+set(CURDIR ${CMAKE_TCECPP_DEP})
 
 set(g3dlib_STAT_SRCS
   ${CMAKE_CURRENT_LIST_DIR}/source/AABox.cpp

@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+# Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
 #
 # This file is free software; as a special exception the author gives
 # unlimited permission to copy and/or distribute it, with or without
@@ -8,10 +8,10 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-if( CMAKE_COMPILER_IS_GNUCXX )
-  add_definitions(--no-warnings)
-elseif( MSVC )
+if( MSVC )
   add_definitions(/W0)
+else()
+  add_definitions(-w)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")

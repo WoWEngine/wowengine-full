@@ -20,7 +20,7 @@ if(PLATFORM EQUAL 64)
 
   #Enable extended object support for debug compiles on X64 (not required on X86)
   TCE_SET_CACHE(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /bigobj")
-  message(STATUS "MSVC: Enabled extended object-support for debug-compiles")
+  message(STATUS "MSVC: Enabled Enabled increased number of sections in object files")
 else()
   # mark 32 bit executables large address aware so they can use > 2GB address space
   TCE_SET_CACHE(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LARGEADDRESSAWARE")
@@ -51,6 +51,10 @@ message(STATUS "MSVC: Disabled NON-SECURE warnings")
 add_definitions(-D_CRT_NONSTDC_NO_WARNINGS)
 message(STATUS "MSVC: Disabled POSIX warnings")
 
+# Ignore specific warnings
+# C4351: new behavior: elements of array 'x' will be default initialized
+# C4091: 'typedef ': ignored on left of '' when no variable is declared
+TCE_SET_CACHE(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4351 /wd4091")
 if(NOT WITH_WARNINGS)
   TCE_SET_CACHE(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4996 /wd4355 /wd4244 /wd4985 /wd4267 /wd4619 /wd4512")
   TCE_SET_CACHE(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4996 /wd4355 /wd4244 /wd4985 /wd4267 /wd4619 /wd4512")

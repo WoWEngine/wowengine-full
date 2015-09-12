@@ -9,8 +9,6 @@ else()
   return()
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/../../library/mods/CMakeLists.txt")
-
 TCE_GET_GLOBAL("MODS_LOADER")
 # Select loader file
 if((NOT ${MODS_LOADER}) AND (EXISTS "${CMAKE_WOWENGINE_GAME_MODS_DIR}/ModsLoader.h"))
@@ -37,10 +35,10 @@ MACRO(LOAD_GAME_MODS)
     TCE_ADD_INC_PATH(
       "${mods_DIRS}"
     )
-ENDMACRO(LOAD_GAME_MODS)
 
-message(STATUS "GAME MODS PREPARATION COMPLETE")
-message("")
+    message(STATUS "GAME MODS PREPARATION COMPLETE")
+    message("")
+ENDMACRO(LOAD_GAME_MODS)
 
 
 #

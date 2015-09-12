@@ -6,8 +6,6 @@ else()
   return()
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/../CMakeLists.txt")
-
 # Select loader file
 if(EXISTS "${CMAKE_WOWENGINE_335a_MODS_DIR}/ModsLoader.h")
   TCE_SET_GLOBAL("MODS_LOADER" ON)
@@ -19,10 +17,11 @@ endif()
 MACRO(LOAD_335a_MODS)
     # add mods
     TCE_SUBDIRLIST(sub_DIRS  "${CMAKE_WOWENGINE_335a_MODS_DIR}" FALSE)
+
     FOREACH(subdir ${sub_DIRS})
-      if(EXISTS "${subdir}/CMakeLists.txt")
-        include("${subdir}/CMakeLists.txt")
-      endif()
+        if(EXISTS "${subdir}/CMakeLists.txt")
+          include("${subdir}/CMakeLists.txt")
+        endif()
 
         set(mods_DIRS
             ${mods_DIRS}
@@ -34,11 +33,11 @@ MACRO(LOAD_335a_MODS)
     TCE_ADD_INC_PATH(
       "${mods_DIRS}"
     )
+
+    message(STATUS "335a MODS PREPARATION COMPLETE")
+    message("")
+
 ENDMACRO(LOAD_335a_MODS)
-
-message(STATUS "335a MODS PREPARATION COMPLETE")
-message("")
-
 
 #
 # BELOW YOU CAN ADD YOUR CUSTOMIZATIONS

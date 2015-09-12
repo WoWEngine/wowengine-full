@@ -3,6 +3,11 @@
  * GNU General Public License version 3; see www.hyperweb2.com/terms/
  */
 
+/*
+    this file is used for "mod" scripts
+*/
+
+
 #ifndef WOWENGINE_MODSLOADER
 #define WOWENGINE_MODSLOADER
 

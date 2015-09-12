@@ -9,8 +9,6 @@ else()
   return()
 endif()
 
-include("${CMAKE_CURRENT_LIST_DIR}/../../project/CMakeLists.txt")
-
 TCE_SET_PATH("CMAKE_WOWENGINE_LIB_MODS_DIR" "${CMAKE_WOWENGINE_LIB_DIR}/mods")
 
 file(GLOB_RECURSE sources_Mods "${CMAKE_WOWENGINE_LIB_MODS_DIR}/*.cpp" "${CMAKE_WOWENGINE_LIB_MODS_DIR}/*.h")

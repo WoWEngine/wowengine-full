@@ -53,15 +53,17 @@ include("${CMAKE_TCECPP_PROJECT}/cmake/options.cmake")
 # turn off PCH totally if enabled (hidden setting, mainly for devs)
 if( NOPCH )
   TCE_SET_CACHE(USE_COREPCH 0)
+  TCE_SET_CACHE(USE_SCRIPTPCH 0)
 endif()
 
 include(CheckPlatform)
+
+include(GroupSources)
 
 # basic packagesearching and setup (further support will be needed, this is a preliminary release!)
 TCE_SET_CACHE(OPENSSL_EXPECTED_VERSION 1.0.0)
 
 find_package(PCHSupport)
-
 find_package(OpenSSL REQUIRED)
 find_package(Threads REQUIRED)
 

@@ -28,6 +28,18 @@ if(TOOLS)
   add_subdirectory("${CMAKE_WOWENGINE_MODULES_DIR}/dep" "${CMAKE_BINARY_DIR}/wowengine_dep") 
 endif()
 
+# must follow this order:
+# load 335a modsloader.h if exists 
+# else load game modsloader.h if exists
+# else load original lib modsloader.h that must exists in repo
+# 
+# Since only one ModsLoader.h can be included in one project, if you need (for example) game/mods and library/mods
+# scripts, you need to include them in 335a ModsLoader.h again.
+#
+include("${CMAKE_WOWENGINE_335a_MODS_DIR}/CMakeLists.txt")
+include("${CMAKE_WOWENGINE_GAME_MODS_DIR}/CMakeLists.txt")
+include("${CMAKE_WOWENGINE_LIB_DIR}/mods/CMakeLists.txt")
+
 #maybe we need to filter some libs when compiling tools only
 MACRO(WOWENGINE_LOAD_LIBS)
     #include common libraries
@@ -63,6 +75,15 @@ TCE_ADD_INC_PATH("${include_dirs}")
 if( SERVERS )
   include("${CMAKE_WOWENGINE_335a_DIR}/world/CMakeLists.txt")
   include("${CMAKE_WOWENGINE_335a_DIR}/scripts/CMakeLists.txt")
+
+  # load all mods
+  LOAD_335a_MODS()
+  LOAD_GAME_MODS()
+  # then link mods library to other related
+  target_link_libraries(world
+    mods
+  )
+
   include("${CMAKE_WOWENGINE_335a_DIR}/server/CMakeLists.txt")
 else()
   if( TOOLS )

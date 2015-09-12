@@ -54,6 +54,8 @@ message("")
 TCE_LOAD_INC_PATHS()
 TCE_ADD_INC_PATH("${CMAKE_CURRENT_LIST_DIR}/PrecompiledHeaders")
 
+GroupSources(${CMAKE_CURRENT_SOURCE_DIR})
+
 add_library(scripts STATIC
   ${scripts_STAT_SRCS}
   ${scripts_STAT_PCH_SRC}
