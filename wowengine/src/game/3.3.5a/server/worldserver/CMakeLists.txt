@@ -62,7 +62,7 @@ if( NOT WIN32 )
   )
 endif()
 
-add_dependencies(worldserver revision.h)
+add_dependencies(worldserver revision_data.h)
 
 if( UNIX AND NOT NOJEM AND NOT APPLE )
   set(worldserver_LINK_FLAGS "-pthread -lncurses ${worldserver_LINK_FLAGS}")
@@ -80,6 +80,7 @@ target_link_libraries(worldserver
   gsoap
   mods
   Detour
+  format
   ${JEMALLOC_LIBRARY}
   ${READLINE_LIBRARY}
   ${TERMCAP_LIBRARY}

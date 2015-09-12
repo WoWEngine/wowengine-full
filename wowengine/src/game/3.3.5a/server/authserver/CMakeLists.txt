@@ -65,7 +65,7 @@ add_executable(authserver
   ${authserver_PCH_SRC}
 )
 
-add_dependencies(authserver revision.h)
+add_dependencies(authserver revision_data.h)
 
 if( NOT WIN32 )
   TCE_GET_GLOBAL("CONF_DIR")
@@ -77,6 +77,7 @@ endif()
 TCE_GET_GLOBAL("TCE_CORE_TGS")
 
 target_link_libraries(authserver
+  format
   ${TCE_CORE_TGS}
   ${MYSQL_LIBRARY}
   ${OPENSSL_LIBRARIES}

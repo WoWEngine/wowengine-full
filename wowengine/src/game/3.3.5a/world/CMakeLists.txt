@@ -47,7 +47,7 @@ add_library(world STATIC
   ${world_STAT_PCH_SRC}
 )
 
-add_dependencies(world revision.h)
+add_dependencies(world revision_data.h)
 
 # Generate precompiled header
 if (USE_COREPCH)

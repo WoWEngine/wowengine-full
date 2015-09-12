@@ -91,10 +91,12 @@ set(include_dirs
   ${CMAKE_TCECPP_PROJECT}
   ${CMAKE_CURRENT_BINARY_DIR}
   #dependencies
+  ${CMAKE_TCECPP_DEP}/process
   ${CMAKE_TCECPP_DEP}/bzip2
   ${CMAKE_TCECPP_DEP}/gsoap
   ${CMAKE_TCECPP_DEP}/g3dlite
   ${CMAKE_TCECPP_DEP}/g3dlite/include
+  ${CMAKE_TCECPP_DEP}/cppformat
   ${CMAKE_TCECPP_DEP}/jemalloc
   ${CMAKE_TCECPP_DEP}/recastnavigation
   ${CMAKE_TCECPP_DEP}/recastnavigation/Detour

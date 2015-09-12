@@ -22,7 +22,7 @@
 #define TRINITY_SYSTEMCONFIG_H
 
 #include "Define.h"
-#include "revision.h"
+#include "revision_data.h"
 
 #define _PACKAGENAME "TrinityCore"
 
